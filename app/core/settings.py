@@ -1,4 +1,4 @@
-from pydantic import BaseSettings
+from pydantic import BaseSettings, HttpUrl
 
 
 class Settings(BaseSettings):
@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     # DIR
     BOLETINES_DIR: str
     DOWNLOADS_DIR: str
+    # URL
+    DIGEPI_URL: HttpUrl
 
     class Config:
         case_sensitive = True
