@@ -36,12 +36,12 @@ def extract_boletin_number(name: str) -> int:
     Returns:
         int: The boletin number
     """
-    numbers = [int(n) for n in findall(r"\b\d+\b", name)]
+    numbers = [int(n) for n in findall(r"\d+", name)]
 
     if numbers.count(19) > 1:
         return 19
     elif "semana" in name.lower():
-        return [n for n in numbers if n < 53][0]
+        return [n for n in numbers if n < 54][0]
     return [n for n in numbers if n != 19][0]
 
 
@@ -79,7 +79,20 @@ def parse_boletines(data: dict) -> list[Boletin]:
         list[Boletin]: List of Boletin objects
     """
     boletines: list[Boletin] = []
-    for boletin in data["ArrayOfFileItem"]["FileItem"][:20]:
-        boletines.append(create_boletin(boletin))
-
+    for boletin in data["ArrayOfFileItem"]["FileItem"]:
+        try:
+            if (
+                "semana" in boletin["Category"].lower()
+                or "covid" in boletin["Category"].lower()
+            ):
+                boletines.append(create_boletin(boletin))
+        except IndexError:
+            print(f"BOLETIN: {boletin}")
+            break
     return boletines
+
+
+def download_boletines(boletines: list[Boletin]):
+    for boletin in boletines:
+        boletin.download()
+        print(f"Boletín {boletin.category} {boletin.number} descargado")
