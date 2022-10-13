@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE=True \
     PIP_NO_CACHE_DIR=True \
     # Poetry
     POETRY_NO_INTERACTION=True \
-    POETRY_VERSION=1.2.0 \
+    POETRY_VERSION=1.2.1 \
     POETRY_VIRTUALENVS_IN_PROJECT=True \
     # Paths
     POETRY_HOME="/poetry" \
@@ -19,7 +19,7 @@ ENV PYTHONDONTWRITEBYTECODE=True \
 WORKDIR /app
 
 # Update
-RUN apt-get update && apt-get install --no-install-recommends -y curl
+RUN apt-get update && apt-get install --no-install-recommends -y curl ghostscript python3-tk
 RUN curl -sSL https://install.python-poetry.org | python3 -
 
 # Insert poetry and virtual environment paths into $PATH
