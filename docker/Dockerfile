@@ -1,4 +1,4 @@
-FROM python:3.10.7-slim
+FROM python:3.11.0-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=True \
@@ -27,7 +27,7 @@ ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 # Install project dependencies
 COPY poetry.lock pyproject.toml /app/
-RUN poetry install --no-dev --no-ansi --no-root
+RUN poetry install --without dev
 
 # Copy project files
 COPY . /app
