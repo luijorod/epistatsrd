@@ -2,7 +2,7 @@
 from re import findall
 
 import xmltodict
-from dateutil.parser import isoparse, parse
+from dateutil.parser import isoparse
 
 from app.core.settings import settings
 from app.schemas.boletin import Boletin
@@ -27,6 +27,7 @@ def convert_xml_to_json(xml_file_path: str):
         #    json_file.write(json_data)
 
 
+# TODO Refactor to Boletin class
 def extract_boletin_number(name: str) -> int:
     """Extract the boletin number from name string
 
@@ -62,7 +63,6 @@ def create_boletin(data: dict) -> Boletin:
     boletin = Boletin(
         category=category,
         date=isoparse(data["Date"]),
-        date_published=parse(data["DateShow"]),
         number=extract_boletin_number(data["Name"]),
         url=f"{settings.DIGEPI_URL}{data['Url']}",
     )
@@ -93,6 +93,8 @@ def parse_boletines(data: dict) -> list[Boletin]:
 
 
 def download_boletines(boletines: list[Boletin]):
-    for boletin in boletines:
+    size = len(boletines)
+    for index, boletin in enumerate(boletines):
         boletin.download()
-        print(f"Boletín {boletin.category} {boletin.number} descargado")
+        prct = round(index / size * 100, 2)
+        print(f"{prct}% - Boletín {boletin.category} {boletin.number} descargado")
