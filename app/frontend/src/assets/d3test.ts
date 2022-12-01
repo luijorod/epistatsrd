@@ -6,9 +6,8 @@ import csv from "./covid_data.csv";
 export async function draw() {
   // 1. Data
   const dataset = csv
-    .slice(2000, 4000)
+    .slice(20000, 22000)
     .filter((x) => x.provincia === "Santiago");
-  console.log(dataset);
 
   const parseDate = d3.timeParse("%d/%m/%Y");
   const xAccessor = (d) => parseDate(d.fecha);
@@ -17,17 +16,17 @@ export async function draw() {
 
   // 2. Dimensions
   let dims: Dimensions = {
-    width: document.body.clientWidth,
-    height: 400,
-    margins: {
+    width: 960,
+    height: 500,
+    margin: {
       top: 20,
       right: 20,
-      bottom: 35,
+      bottom: 20,
       left: 20,
     },
   };
-  dims.containerWidth = dims.width - dims.margins.left - dims.margins.right;
-  dims.containerHeight = dims.height - dims.margins.top - dims.margins.bottom;
+  dims.containerWidth = dims.width - dims.margin.left - dims.margin.right;
+  dims.containerHeight = dims.height - dims.margin.top - dims.margin.bottom;
 
   // 3. Container
   const svg = d3
@@ -40,7 +39,7 @@ export async function draw() {
     .append("g")
     .style(
       "transform",
-      `translate(${dims.margins.left}px, ${dims.margins.top}px)`
+      `translate(${dims.margin.left}px, ${dims.margin.top}px)`
     );
 
   const tooltip = d3.select("#tooltip");
@@ -61,7 +60,7 @@ export async function draw() {
 
   const yScale = d3
     .scaleLinear()
-    .domain(d3.extent(dataset, yAccessor))
+    .domain(d3.extent(dataset, yAccessor) as Iterable<number>)
     .range([dims.containerHeight, 0])
     .nice();
 
@@ -88,7 +87,7 @@ export async function draw() {
   xAxisGroup
     .append("text")
     .attr("x", dims.containerWidth / 2)
-    .attr("y", dims.margins.bottom)
+    .attr("y", dims.margin.bottom)
     .attr("fill", "black")
     .style("font-size", 15)
     .text("Fecha");
@@ -98,7 +97,7 @@ export async function draw() {
   yAxisGroup
     .append("text")
     .attr("x", dims.containerHeight / 2)
-    .attr("y", dims.margins.left / 2)
+    .attr("y", dims.margin.left / 2)
     .attr("fill", "black");
   //.style("transform", "rotate(270deg)");
   //.style("text-anchor", "middle")
