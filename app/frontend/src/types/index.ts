@@ -1,1 +1,1 @@
-export type { Dimensions, Margins } from "./d3";
+export type { Dimensions, Margin, ScaleLinear, ScaleTime } from "./d3";
