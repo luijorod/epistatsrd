@@ -1,21 +1,8 @@
-import { useEffect } from "react";
-
-import { draw } from "./assets/d3test";
-import "./style.css";
+import "./styles.css";
+import { TimeSeries } from "./components";
 
 function App() {
-  useEffect(() => {
-    draw();
-  }, []);
-
-  return (
-    <div id="chart">
-      <div id="tooltip">
-        <div className="value"></div>
-        <div className="date"></div>
-      </div>
-    </div>
-  );
+  return <TimeSeries />;
 }
 
 export default App;
