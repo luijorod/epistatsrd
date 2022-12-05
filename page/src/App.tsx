@@ -1,4 +1,4 @@
-import "./styles.css";
+import "./index.css";
 import { TimeSeries } from "./components";
 
 function App() {
