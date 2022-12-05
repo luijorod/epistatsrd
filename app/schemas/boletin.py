@@ -11,7 +11,6 @@ from app.utils.download import download_file
 class Boletin(BaseModel):
     category: str
     date: datetime
-    date_published: datetime
     number: int
     url: HttpUrl
 
