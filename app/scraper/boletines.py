@@ -69,7 +69,7 @@ def create_boletin(data: dict) -> Boletin:
     return boletin
 
 
-def parse_boletines(data: dict) -> list[Boletin]:
+def parse_boletines(data) -> list[Boletin]:
     """Parses boletines from data dict
 
     Args:
@@ -97,4 +97,4 @@ def download_boletines(boletines: list[Boletin]):
     for index, boletin in enumerate(boletines):
         boletin.download()
         prct = round(index / size * 100, 2)
-        print(f"{prct}% - Boletín {boletin.category} {boletin.number} descargado")
+        print(f"{prct:.2f} % - Boletín {boletin.category} {boletin.number} descargado")
