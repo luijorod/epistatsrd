@@ -1,5 +1,5 @@
 {
-  "homepage": "http://luijorod.github.io/epistatsrd/",
+  "homepage": "https://epistatsrd.com/",
   "name": "epistatsrd",
   "private": true,
   "version": "0.0.0",
@@ -12,24 +12,24 @@
     "deploy": "npx gh-pages -d build"
   },
   "dependencies": {
-    "d3": "7.6.1",
+    "d3": "7.8.0",
     "file-saver": "2.0.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-select": "5.6.1"
+    "react-select": "5.7.0"
   },
   "devDependencies": {
     "@rollup/plugin-dsv": "3.0.1",
     "@types/d3": "7.4.0",
-    "@types/node": "18.11.9",
-    "@types/react": "18.0.25",
-    "@types/react-dom": "18.0.9",
-    "@vitejs/plugin-react": "2.2.0",
+    "@types/node": "18.11.18",
+    "@types/react": "18.0.26",
+    "@types/react-dom": "18.0.10",
+    "@vitejs/plugin-react": "3.0.0",
     "autoprefixer": "10.4.13",
     "gh-pages": "4.0.0",
-    "postcss": "8.4.19",
+    "postcss": "8.4.20",
     "tailwindcss": "3.2.4",
-    "typescript": "4.9.3",
-    "vite": "3.2.4"
+    "typescript": "4.9.4",
+    "vite": "4.0.4"
   }
 }
