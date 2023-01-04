@@ -16,7 +16,7 @@ import {
 import { downloadDataset } from "../utils";
 
 import { colors, provincias as provs } from "../assets/provincias";
-import { DateHistogram } from "./DateHistogram";
+import { DateLineBrush } from "./DateLineBrush";
 
 const yVariables = [
   { value: "casos_nuevos", label: "Casos Nuevos" },
@@ -74,25 +74,27 @@ export function TimeSeries() {
     yAccessor
   );
 
-  const p = provincias.map((d) => d.value);
-
-  // console.log("brushExtent: ", brushExtent);
-  // console.log("dateExtent: ", scalesExtent);
   return (
     <>
-      <Select
-        closeMenuOnSelect={true}
-        defaultValue={provs[0]}
-        onChange={handleProvinciasChange}
-        options={provs}
-        isMulti
-      />
-      <Select
-        closeMenuOnSelect={true}
-        defaultValue={yVariables[0]}
-        onChange={handleYVariableChange}
-        options={yVariables}
-      />
+      <div className="container flex justify-evenly justify-items-center mx-auto">
+        <div className="">
+          <Select
+            closeMenuOnSelect={false}
+            defaultValue={provs[0]}
+            onChange={handleProvinciasChange}
+            options={provs}
+            isMulti
+          />
+        </div>
+        <div className="">
+          <Select
+            closeMenuOnSelect={true}
+            defaultValue={yVariables[0]}
+            onChange={handleYVariableChange}
+            options={yVariables}
+          />
+        </div>
+      </div>
       <SVGChart dimensions={dims}>
         <AxisLeft
           scale={yScale}
@@ -135,17 +137,15 @@ export function TimeSeries() {
             stroke={colors[i]}
           />
         ))}
+        <g transform={`translate(0, ${dims.containerHeight})`}>
+          <DateLineBrush
+            dataset={dataset}
+            dimensions={dims}
+            setBrushExtent={setBrushExtent}
+          />
+        </g>
       </SVGChart>
-      <DateHistogram
-        data={dataset}
-        dimensions={dims}
-        xAccessor={xAccessor}
-        yAccessor={yAccessor}
-        xScale={xScale}
-        yScale={yScale}
-        setBrushExtent={setBrushExtent}
-      />
-      <button onClick={() => downloadDataset(data)}>Download Dataset</button>
+      <button onClick={() => downloadDataset(data)}>Descargar datos</button>
     </>
   );
 }
