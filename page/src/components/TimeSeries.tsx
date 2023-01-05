@@ -13,32 +13,21 @@ import {
   useFilter,
   useScales,
 } from "../hooks";
-import { downloadDataset } from "../utils";
+import { colors, downloadDataset, provincias as provs } from "../utils";
 
-import { colors, provincias as provs } from "../assets/provincias";
 import { DateLineBrush } from "./DateLineBrush";
 
-const yVariables = [
-  { value: "casos_nuevos", label: "Casos Nuevos" },
-  { value: "casos_acum", label: "Casos Acumulados" },
-  { value: "incidencia", label: "Incidencia" },
-  { value: "positividad", label: "Tasa de Positividad" },
-  { value: "recuperados", label: "Recuperados" },
-  { value: "defun_nuevos", label: "Defunciones Nuevas" },
-  { value: "defun_acum", label: "Defunciones Acumuladas" },
-  { value: "procesadas", label: "Muestras Procesadas" },
-];
-
 export function TimeSeries() {
+  // Data and Accessors
+  const { data, dataset, datasetVars, setData, datasets, setDatasets } =
+    useData("covid");
+
   // Current selected [provinces]
   const [provincias, setProvincias] = useState([provs[0]]);
   // Current selected Y variable
-  const [yVariable, setYVariable] = useState(yVariables[0]);
+  const [yVariable, setYVariable] = useState(datasetVars[0]);
   // Current
   const [brushExtent, setBrushExtent] = useState();
-
-  // Data and Accessors
-  const { dataset, data, setData, datasets, setDatasets } = useData("covid");
 
   const [xAccessor, yAccessor] = useAccessors(
     "%d/%m/%Y",
@@ -89,9 +78,9 @@ export function TimeSeries() {
         <div className="">
           <Select
             closeMenuOnSelect={true}
-            defaultValue={yVariables[0]}
+            defaultValue={datasetVars[0]}
             onChange={handleYVariableChange}
-            options={yVariables}
+            options={datasetVars}
           />
         </div>
       </div>

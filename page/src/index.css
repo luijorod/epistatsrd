@@ -21,7 +21,7 @@ body {
 }
 
 .chart path {
-  stroke-width: 1;
+  stroke-width: 1.5;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
