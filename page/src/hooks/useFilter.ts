@@ -1,42 +1,24 @@
-import { useEffect } from "react";
-import { extent } from "d3";
+import { useMemo } from "react";
 
-export function useFilter(
-  brushExtent,
-  dataset,
-  provincias,
-  setScalesExtent,
-  setData,
-  setDatasets,
-  xAccessor,
-  yAccessor
-): any {
-  let filteredDatasets;
-  const provStrings = provincias.map((d) => d.value);
-
-  useEffect(() => {
-    let filteredDataset = !brushExtent
-      ? dataset.filter((d) => provStrings.includes(d.provincia))
-      : dataset.filter((d) => {
-          const date = xAccessor(d);
+export function useFilter(brushExtent, dataset, dateAccessor, provincias): any {
+  const [filteredDataset, filteredDatasets] = useMemo(() => {
+    const filteredDataset = brushExtent
+      ? dataset.filter((d) => {
+          const date = dateAccessor(d);
           return (
-            provStrings.includes(d.provincia) &&
+            provincias.includes(d.provincia) &&
             date >= brushExtent[0] &&
             date <= brushExtent[1]
           );
-        });
+        })
+      : dataset.filter((d) => provincias.includes(d.provincia));
 
-    filteredDatasets = provStrings.map((provincia) =>
+    const filteredDatasets = provincias.map((provincia) =>
       filteredDataset.filter((d) => d.provincia === provincia)
     );
 
-    setScalesExtent({
-      x: extent(filteredDataset, xAccessor),
-      y: extent(filteredDataset, yAccessor),
-    });
-    setData(filteredDataset);
-    setDatasets(filteredDatasets);
-  }, [brushExtent, provincias]);
+    return [filteredDataset, filteredDatasets];
+  }, [brushExtent, dataset, provincias]);
 
-  return filteredDatasets;
+  return [filteredDataset, filteredDatasets];
 }
