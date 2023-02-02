@@ -1,9 +1,10 @@
-import { curveNatural, line } from "d3";
-import { Dimensions, ScaleLinear, ScaleTime } from "../types";
+import { curveLinear, line } from "d3";
+import { ScaleLinear, ScaleTime } from "../types";
 
 export interface LineProps {
   data: any;
-  dimensions: Dimensions;
+  height: number;
+  width: number;
   stroke: string;
   xAccessor: any;
   xScale: ScaleTime;
@@ -13,7 +14,8 @@ export interface LineProps {
 
 export function Line({
   data,
-  dimensions: { containerHeight, containerWidth },
+  height,
+  width,
   stroke,
   xAccessor,
   xScale,
@@ -22,18 +24,18 @@ export function Line({
   ...rest
 }: LineProps): JSX.Element {
   const lineGenerator = line()
-    .curve(curveNatural)
+    .curve(curveLinear)
     .x((d) => xScale(xAccessor(d)))
     .y((d) => yScale(yAccessor(d)));
 
   return (
     <path
+      height={height}
+      width={width}
       d={lineGenerator(data)}
-      height={containerHeight}
-      width={containerWidth}
       stroke={stroke}
-      {...rest}
       fill="none"
+      {...rest}
     />
   );
 }
