@@ -1,18 +1,17 @@
 import { useMemo } from "react";
 import { timeParse } from "d3";
 
-export function useAccessors(
-  formatString: string,
-  xVariable: string,
-  yVariable: string
-): [(any) => Date, (any) => number] {
-  let [xAccessor, yAccessor] = useMemo(() => {
+export function useDateAccessor(dateVariable: string, formatString: string) {
+  const accessor = useMemo(() => {
     const parseDate = timeParse(formatString);
-    const xAccessor = (d) => parseDate(d[xVariable]);
-    const yAccessor = (d) => +d[yVariable];
 
-    return [xAccessor, yAccessor];
-  }, [formatString, xVariable, yVariable]);
+    return (d: string) => parseDate(d[dateVariable]);
+  }, [formatString, dateVariable]);
 
-  return [xAccessor, yAccessor];
+  return accessor;
+}
+
+export function useNumericAccessor(variable: string) {
+  // Cast d[variable] to numeric type
+  return useMemo(() => (d: string) => +d[variable], [variable]);
 }
