@@ -1,32 +1,41 @@
-import { timeFormat } from "d3";
+import { format } from "d3";
 
-import { ScaleLinear, ScaleTime } from "../types";
+import { Dimensions, ScaleLinear, ScaleTime } from "../types";
+import { esMXFormatter } from "../utils";
 
 export interface AxisProps {
+  dimensions?: Dimensions;
+  format?: string;
   scale: ScaleLinear | ScaleTime;
+  textTranslate?: number;
+  textOffset?: number;
   tickSize?: number;
-  format?: (value: string | number | Date) => string;
-  containerSize?: number;
-  tickOffset?: number;
+  tickTranslate?: number;
 }
 
 export function AxisLeft({
-  containerSize,
+  dimensions: { containerHeight },
   scale,
-  tickSize = 0,
-  tickOffset = 10,
+  textOffset = 5,
+  tickSize = 10,
 }: AxisProps): JSX.Element {
   return (
     <g className="ticks-group">
-      {scale.ticks().map((tickValue) => (
+      <line
+        className="axis-line"
+        y1={containerHeight}
+        stroke="black"
+        transform={`translate(0, 0)`}
+      />
+      {scale.ticks(6).map((tickValue) => (
         <g
           key={tickValue}
           className="tick"
           transform={`translate(0, ${scale(tickValue)})`}
         >
-          <line x2={containerSize} />
-          <text key={tickValue} x={tickOffset} textAnchor="end">
-            {tickValue}
+          <line x2={tickSize} />
+          <text key={tickValue} x={-textOffset} textAnchor="end" dy=".32em">
+            {format(",")(tickValue)}
           </text>
         </g>
       ))}
@@ -35,28 +44,37 @@ export function AxisLeft({
 }
 
 export function AxisTimeSeries({
+  dimensions: { containerHeight, containerWidth },
+  format = "%e %b %y",
   scale,
-  containerSize,
-  tickSize = 0,
-  tickOffset = 0,
-  format = timeFormat("%B"),
+  textTranslate = containerHeight,
+  textOffset = 0,
+  tickTranslate = 0,
+  tickSize = containerHeight,
 }: AxisProps): JSX.Element {
   return (
     <g className="ticks-group">
-      {scale.ticks().map((tickValue) => (
+      <line
+        className="axis-line"
+        x1={containerWidth}
+        stroke="black"
+        transform={`translate(0, ${containerHeight})`}
+      />
+      {scale.ticks(6).map((tickValue) => (
         <g
           key={tickValue}
           className="tick"
-          transform={`translate(${scale(tickValue)}, ${containerSize})`}
+          transform={`translate(${scale(tickValue)}, ${tickTranslate})`}
         >
           <line y2={tickSize} />
           <text
             key={tickValue}
-            y={tickSize + tickOffset}
+            y={textOffset}
             dy="0.32em"
             textAnchor="middle"
+            transform={`translate(0, ${textTranslate})`}
           >
-            {format(tickValue)}
+            {esMXFormatter(format)(tickValue)}
           </text>
         </g>
       ))}
