@@ -1,24 +1,35 @@
 import { useMemo } from "react";
-import { scaleLinear, scaleTime } from "d3";
-import { Dimensions, ScaleLinear, ScaleTime } from "../types";
+import { extent, scaleLinear, scaleTime } from "d3";
+import { ScaleLinear, ScaleTime } from "../types";
 
-export function useScales(
-  extent: any,
-  dimensions: Dimensions,
-  xAccessor: any,
-  yAccessor: any
-): [ScaleTime, ScaleLinear] {
-  const [xScale, yScale] = useMemo(() => {
-    const xScale: ScaleTime = scaleTime()
-      .domain(extent.x as Iterable<Date>)
-      .range([0, dimensions.containerWidth]);
+export function useDomain<T>(dataset: any, accessor) {
+  const domain = useMemo(() => {
+    return extent(dataset, accessor) as [T, T];
+  }, [dataset, accessor]);
 
-    const yScale: ScaleLinear = scaleLinear()
-      .domain(extent.y as Iterable<number>)
-      .range([dimensions.containerHeight, 0])
-      .nice();
-    return [xScale, yScale];
-  }, [extent, dimensions, xAccessor, yAccessor]);
+  return domain;
+}
 
-  return [xScale, yScale];
+export function useLinearScale(
+  domain: [number, number],
+  range: [number, number]
+): ScaleLinear {
+  const scale = useMemo(
+    () => scaleLinear().domain(domain).range(range),
+    [domain, range]
+  );
+
+  return scale;
+}
+
+export function useTimeScale(
+  domain: [Date, Date],
+  range: [number, number]
+): ScaleTime {
+  const scale = useMemo(
+    () => scaleTime().domain(domain).range(range),
+    [domain, range]
+  );
+
+  return scale;
 }
