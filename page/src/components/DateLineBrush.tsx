@@ -1,42 +1,51 @@
-import { brushX, extent, scaleLinear, scaleTime, select, timeParse } from "d3";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { brushX, select } from "d3";
 
 import { AxisTimeSeries } from "./Axis";
 import { Line } from "./Line";
 
-import { useSumBy } from "../hooks";
+import {
+  useDateAccessor,
+  useDomain,
+  useNumericAccessor,
+  useLinearScale,
+  useSumBy,
+  useTimeScale,
+} from "../hooks";
 import { Dimensions } from "../types";
 
 export interface DateLineBrushProps {
-  dimensions: Dimensions;
   dataset: any;
+  dateVariable: string;
+  dimensions: Dimensions;
+  formatString: string;
   setBrushExtent: any;
+  yVariable: string;
 }
 
 export function DateLineBrush({
   dataset,
+  dateVariable,
   dimensions,
+  formatString,
   setBrushExtent,
+  yVariable,
 }: DateLineBrushProps) {
-  const sum = Array.from(useSumBy(dataset, "fecha", "casos_nuevos"));
+  // Destructure dimensions
+  const { containerHeight, containerWidth } = dimensions;
 
-  const { containerHeight, containerWidth, margin } = dimensions;
+  // Aggregate yVariable by dateVariable
+  const sum = Array.from(useSumBy(dataset, dateVariable, yVariable));
 
-  const accessorX = (d) => timeParse("%d/%m/%Y")(d[0]);
-  const accessorY = (d) => +d[1];
+  // "1" is the aggregated sum for "0" date
+  const xAccessor = useDateAccessor("0", formatString);
+  const yAccessor = useNumericAccessor("1");
 
-  const scaleX = useMemo(
-    () =>
-      scaleTime()
-        .domain(extent(sum, accessorX) as Iterable<Date>)
-        .range([0, containerWidth]),
-    []
-  );
+  const xDomain = useDomain<Date>(sum, xAccessor);
+  const yDomain = useDomain<number>(sum, yAccessor);
 
-  const scaleY = useMemo(
-    () => scaleLinear().domain(extent(sum, accessorY)).range([15, 0]),
-    [containerHeight]
-  );
+  const xScale = useTimeScale(xDomain, [0, containerWidth]);
+  const yScale = useLinearScale(yDomain, [15, 0]);
 
   const brushRef = useRef();
 
@@ -47,25 +56,29 @@ export function DateLineBrush({
     ]);
     brush(select(brushRef.current));
     brush.on("brush end", ({ selection }) => {
-      setBrushExtent(selection && selection.map(scaleX.invert));
+      setBrushExtent(selection && selection.map(xScale.invert));
     });
-  }, []);
+  }, [dataset]);
 
   return (
     <>
-      <g transform={`translate(0,${margin.top})`}>
-        <Line
-          data={sum}
-          dimensions={dimensions}
-          xAccessor={accessorX}
-          xScale={scaleX}
-          yAccessor={accessorY}
-          yScale={scaleY}
-          stroke="black"
-        />
-        <AxisTimeSeries scale={scaleX} containerSize={200} />
-        <g ref={brushRef} />
-      </g>
+      <AxisTimeSeries
+        dimensions={dimensions}
+        scale={xScale}
+        textTranslate={40}
+        tickSize={20}
+      />
+      <Line
+        data={sum}
+        height={400}
+        width={containerWidth}
+        xAccessor={xAccessor}
+        xScale={xScale}
+        yAccessor={yAccessor}
+        yScale={yScale}
+        stroke="black"
+      />
+      <g ref={brushRef} />
     </>
   );
 }
