@@ -1,1 +1,4 @@
-export { TimeSeries } from "./TimeSeries";
+export { About } from "./About";
+export { Navbar } from "./Navbar";
+export { TimeSeriesViz } from "./TimeSeriesViz";
+export { TimeSeriesContainer } from "./TimeSeriesContainer";
