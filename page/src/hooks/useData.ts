@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction, useState } from "react";
-
 import { datasetVars } from "../utils";
 
 import colera from "../assets/col.csv";
@@ -9,16 +7,7 @@ import leptospirosis from "../assets/lep.csv";
 import malaria from "../assets/mal.csv";
 import mmi from "../assets/mmi.csv";
 
-interface UseData {
-  data: any;
-  dataset: any;
-  datasetVars: any;
-  datasets: any[];
-  setData: Dispatch<SetStateAction<any>>;
-  setDatasets: Dispatch<SetStateAction<any>>;
-}
-
-function getDataset(dataset: string = "covid"): any {
+function getDatasetAndVars(dataset: string = "covid"): any {
   switch (dataset) {
     case "colera":
       return [colera, datasetVars.colera];
@@ -37,10 +26,12 @@ function getDataset(dataset: string = "covid"): any {
   }
 }
 
-export function useData(datasetString: string = "covid"): UseData {
-  const [dataset, datasetVars] = getDataset(datasetString);
-  const [data, setData] = useState(dataset);
-  const [datasets, setDatasets] = useState([dataset]);
+export function useData(datasetString: string = "covid") {
+  // 1. dataset: Tracks scales (useExtent), filter by date and province (useFilter),
+  // and brushing by dates (DateLineBrush)
+  // 2. datasetVars: Holds dateFormatString and dateVar to define accessors
+  // (DateLineBrush, useAccessors), and vars to populate Y variables
+  const [dataset, datasetVars] = getDatasetAndVars(datasetString);
 
-  return { data, dataset, datasetVars, datasets, setData, setDatasets };
+  return { dataset, datasetVars };
 }
