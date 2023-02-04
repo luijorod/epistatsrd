@@ -8,10 +8,11 @@ function datasetToCSV(data: any): string {
   return content;
 }
 
-export function downloadDataset(data: any): void {
-  const content = datasetToCSV(data);
+export function downloadDataset(data: any, format = "csv"): void {
+  const content =
+    format === "csv" ? datasetToCSV(data) : JSON.stringify(data, null, 2);
   var blob = new Blob([content], {
-    type: "text/csv;charset=utf-8",
+    type: `text/${format};charset=utf-8`,
   });
-  saveAs(blob, "dataset.csv");
+  saveAs(blob, `dataset.${format}`);
 }
