@@ -1,4 +1,8 @@
-import { ScaleLinear as D3ScaleLinear, ScaleTime as D3ScaleTime } from "d3";
+import {
+  ScaleLinear as D3ScaleLinear,
+  ScaleSequential as D3ScaleSequential,
+  ScaleTime as D3ScaleTime,
+} from "d3";
 
 export type Dimensions = {
   width: number;
@@ -16,4 +20,5 @@ export type Margin = {
 };
 
 export type ScaleLinear = D3ScaleLinear<number, number>;
+export type ScaleSequential = D3ScaleSequential<string, string>;
 export type ScaleTime = D3ScaleTime<number, number>;
