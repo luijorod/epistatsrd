@@ -11,7 +11,7 @@ export function SVGChart({
   dimensions: { height, width, margin },
 }: SVGChartProps): JSX.Element {
   return (
-    <svg width={width} height={height} className="chart">
+    <svg height={height} width={width} className="chart">
       <g transform={`translate(${margin.left}, ${margin.top})`}>{children}</g>
     </svg>
   );
