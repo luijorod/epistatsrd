@@ -70,7 +70,7 @@ export function DateLineBrush({
       />
       <Line
         data={sum}
-        height={400}
+        height={200}
         width={containerWidth}
         xAccessor={xAccessor}
         xScale={xScale}
@@ -78,6 +78,7 @@ export function DateLineBrush({
         yScale={yScale}
         stroke="black"
       />
+      <line stroke="#e6e6e6" y1={20} y2={20} x2={dimensions.containerWidth} />
       <g ref={brushRef} />
     </>
   );
