@@ -1,12 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  overflow: hidden;
-  font-family: "Roboto", sans-serif;
+.province {
+  fill-opacity: 1;
+  stroke: black;
+  stroke-opacity: 1;
+  stroke-width: 0.5;
+}
+
+.province:hover {
+  fill-opacity: 0.5;
+  fill: rgb(254 240 138);
 }
 
 .axis-label {
@@ -14,36 +19,35 @@ body {
   font-size: x-large;
 }
 
-.chart {
-  background-color: white;
-  margin: 25px auto;
-  position: relative;
-}
-
-.chart path {
-  stroke-width: 1.5;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-}
-
 .ticks-group {
   opacity: 1;
   font-size: small;
 }
 
-.tick line {
-  stroke: #c0c0bb;
+.tick line,
+.axis-line {
+  stroke: #e6e6e6;
 }
 
-#tooltip {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  display: none;
-  padding: 10px;
-  pointer-events: none;
-  position: absolute;
+.nav {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
 }
 
-.mark {
-  fill: #137b80;
+.nav a {
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+}
+
+.nav li.active {
+  background-color: #555;
+}
+
+.nav li:hover {
+  background-color: #777;
 }
