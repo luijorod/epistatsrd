@@ -9,12 +9,9 @@ interface DownloadButtonProps {
 
 export function DownloadButton({ data, format = "csv" }: DownloadButtonProps) {
   return (
-    <div className="flex items-center rounded-md bg-sky-700 px-3 py-2 text-white space-x-2 font-bold">
+    <div className="flex items-center justify-center rounded-md bg-blue-700 px-3 py-2 text-white space-x-2 text-sm">
       <BsDownload />
-      <button
-        onClick={() => downloadDataset(data, format)}
-        className="font-bold"
-      >
+      <button onClick={() => downloadDataset(data, format)}>
         {format.toUpperCase()}
       </button>
     </div>
