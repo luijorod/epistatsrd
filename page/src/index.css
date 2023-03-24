@@ -51,3 +51,7 @@
 .nav li:hover {
   background-color: #777;
 }
+
+p a {
+  color: blue;
+}
