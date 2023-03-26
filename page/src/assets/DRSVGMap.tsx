@@ -20,8 +20,8 @@ export function DRSVGMap({
     <>
       <svg
         viewBox={`0 0 800 600`}
-        height={dims.containerHeight}
-        width={dims.containerWidth}
+        height={dims.height}
+        width={dims.width}
         id="dr-svg-map"
       >
         <g transform="translate(50,0)">
