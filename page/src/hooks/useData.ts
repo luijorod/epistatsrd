@@ -1,37 +1,27 @@
-import { datasetVars } from "../utils";
+import { useEffect, useState } from "react";
 
-import colera from "../assets/col.csv";
-import covid from "../assets/cov.csv";
-import dengue from "../assets/den.csv";
-import leptospirosis from "../assets/lep.csv";
-import malaria from "../assets/mal.csv";
-import mmi from "../assets/mmi.csv";
+import { csv, DSVRowArray } from "d3";
+import { useQuery } from "react-query";
 
-function getDatasetAndVars(dataset: string = "covid"): any {
-  switch (dataset) {
-    case "colera":
-      return [colera, datasetVars.colera];
-    case "covid":
-      return [covid, datasetVars.covid];
-    case "dengue":
-      return [dengue, datasetVars.dengue];
-    case "leptospirosis":
-      return [leptospirosis, datasetVars.leptospirosis];
-    case "malaria":
-      return [malaria, datasetVars.malaria];
-    case "mmi":
-      return [mmi, datasetVars.mmi];
-    default:
-      break;
-  }
-}
+import { datasetVars as vars } from "../utils";
 
 export function useData(datasetString: string = "covid") {
   // 1. dataset: Tracks scales (useExtent), filter by date and province (useFilter),
   // and brushing by dates (DateLineBrush)
   // 2. datasetVars: Holds dateFormatString and dateVar to define accessors
   // (DateLineBrush, useAccessors), and vars to populate Y variables
-  const [dataset, datasetVars] = getDatasetAndVars(datasetString);
+  const datasetVars = vars[datasetString];
+  const [dataset, setDataset] = useState([]);
 
-  return { dataset, datasetVars };
+  const { isFetched, data } = useQuery(
+    ["dataset", datasetString],
+    () => csv(datasetVars.url).then((res) => res),
+    { initialData: [] as DSVRowArray }
+  );
+
+  useEffect(() => {
+    setDataset(data);
+  }, [datasetString, isFetched]);
+
+  return { dataset, datasetVars, isFetched };
 }

@@ -33,8 +33,8 @@ import { DRSVGMap } from "../assets/DRSVGMap";
 
 export function VizContainer(): JSX.Element {
   // Currently selected dataset
-  const [currentDataset, setCurrentDataset] = useState(avlblDatasets[1].value);
-  const { dataset, datasetVars } = useData(currentDataset);
+  const [currentDataset, setCurrentDataset] = useState(avlblDatasets[0].value);
+  const { dataset, datasetVars, isFetched } = useData(currentDataset);
   const { dateFormatString, dateVar, vars } = datasetVars;
 
   // Currently selected [provincias]
@@ -98,19 +98,19 @@ export function VizContainer(): JSX.Element {
   return (
     <>
       {/* Menus de Datasets, Provincias e Indicadores */}
-      <div className="flex justify-evenly py-5 bg-gray-100">
+      <div className="flex flex-col md:flex-row justify-evenly py-5 bg-gray-100">
         <div className="min-w-fit mx-5">
           <span className="font-bold">Dataset</span>
           <Select
             closeMenuOnSelect={true}
-            defaultValue={avlblDatasets[1]}
+            defaultValue={avlblDatasets[0]}
             onChange={handleCurrentDataset}
             options={avlblDatasets}
           />
         </div>
-        <div>
+        <div className="mx-5">
           <span className="font-bold">Provincias</span>
-          <div className="flex min-w-fit text-sm">
+          <div className="flex min-w-fit text-xs">
             <Select
               closeMenuOnSelect={false}
               value={provincias}
@@ -155,7 +155,7 @@ export function VizContainer(): JSX.Element {
       {/* Tabs Gráfica, Heatmap, Tabla */}
       <div className="flex flex-col items-center justify-center">
         <Tabs className="my-5">
-          <TabList className="flex items-center justify-center space-x-32 mb-5">
+          <TabList className="flex items-center justify-center space-x-10 mb-5">
             <Tab className="border-2 border-b-0 rounded-t-xl px-3 py-2 focus:bg-black focus:text-white">
               Gráfica
             </Tab>
@@ -166,49 +166,56 @@ export function VizContainer(): JSX.Element {
               Tabla
             </Tab>
           </TabList>
-          <TabPanel>
-            <TimeSeriesViz
-              dimensions={dims}
-              filteredDatasets={filteredDatasets}
-              xAccessor={xAccessor}
-              xScale={xScale}
-              yAccessor={yAccessor}
-              yScale={yScale}
-              yVariable={yVariable}
-            />
-          </TabPanel>
-          <TabPanel>
-            <DRSVGMap
-              dimensions={dims}
-              scale={colorScale}
-              values={acumuladoProvs}
-              setProvincias={setProvincias}
-            />
-          </TabPanel>
-          <TabPanel>
-            <table className="min-w-full text-left">
-              <thead className="bg-black text-white font-bold">
-                <tr>
-                  <th className="p-1.5">Provincia</th>
-                  <th>{yVariable.label}</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm">
-                {acumuladoArray.map((pv, i) => (
-                  <tr
-                    className={
-                      (i % 2 === 0 && "bg-gray-100") + " hover:bg-yellow-100"
-                    }
-                  >
-                    <td className="p-1" key={pv.provincia}>
-                      {pv.provincia}
-                    </td>
-                    <td key={pv.valor}>{format(",")(pv.valor)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </TabPanel>
+          {!isFetched ? (
+            <span>Cargando datos...</span>
+          ) : (
+            <>
+              <TabPanel>
+                <TimeSeriesViz
+                  dimensions={dims}
+                  filteredDatasets={filteredDatasets}
+                  xAccessor={xAccessor}
+                  xScale={xScale}
+                  yAccessor={yAccessor}
+                  yScale={yScale}
+                  yVariable={yVariable}
+                />
+              </TabPanel>
+              <TabPanel>
+                <DRSVGMap
+                  dimensions={dims}
+                  scale={colorScale}
+                  values={acumuladoProvs}
+                  setProvincias={setProvincias}
+                />
+              </TabPanel>
+              <TabPanel>
+                <table className="min-w-full text-left">
+                  <thead className="bg-black text-white font-bold">
+                    <tr>
+                      <th className="p-1.5">Provincia</th>
+                      <th>{yVariable.label}</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-sm">
+                    {acumuladoArray.map((pv, i) => (
+                      <tr
+                        className={
+                          (i % 2 === 0 && "bg-gray-100") +
+                          " hover:bg-yellow-100"
+                        }
+                      >
+                        <td className="p-1" key={pv.provincia}>
+                          {pv.provincia}
+                        </td>
+                        <td key={pv.valor}>{format(",")(pv.valor)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </TabPanel>
+            </>
+          )}
         </Tabs>
 
         {/* Filtro de línea temporal */}
