@@ -45,6 +45,7 @@ export const datasetVars = {
       { value: "incidencia", label: "Incidencia Acumulada" },
       { value: "defun_nuevas", label: "Defunciones Nuevas" },
     ],
+    url: "https://raw.githubusercontent.com/luijorod/epistatsrd/main/page/src/assets/colera.csv",
   },
   covid: {
     dateFormatString: "%d/%m/%Y",
@@ -59,6 +60,7 @@ export const datasetVars = {
       { value: "defun_acum", label: "Defunciones Acumuladas" },
       { value: "procesadas", label: "Muestras Procesadas" },
     ],
+    url: "https://raw.githubusercontent.com/luijorod/epistatsrd/main/page/src/assets/covid.csv",
   },
   dengue: {
     dateFormatString: "%Y-%U",
@@ -68,6 +70,7 @@ export const datasetVars = {
       { value: "incidencia", label: "Incidencia Acumulada" },
       { value: "defun_nuevas", label: "Defunciones Nuevas" },
     ],
+    url: "https://raw.githubusercontent.com/luijorod/epistatsrd/main/page/src/assets/dengue.csv",
   },
   leptospirosis: {
     dateFormatString: "%Y-%U",
@@ -77,6 +80,7 @@ export const datasetVars = {
       { value: "incidencia", label: "Incidencia Acumulada" },
       { value: "defun_nuevas", label: "Defunciones Nuevas" },
     ],
+    url: "https://raw.githubusercontent.com/luijorod/epistatsrd/main/page/src/assets/leptospirosis.csv",
   },
   malaria: {
     dateFormatString: "%Y-%U",
@@ -86,6 +90,7 @@ export const datasetVars = {
       { value: "incidencia", label: "Incidencia Acumulada" },
       { value: "defun_nuevas", label: "Defunciones Nuevas" },
     ],
+    url: "https://raw.githubusercontent.com/luijorod/epistatsrd/main/page/src/assets/malaria.csv",
   },
   mmi: {
     dateFormatString: "%Y-%U",
@@ -94,6 +99,7 @@ export const datasetVars = {
       { value: "maternas", label: "Muertes Maternas" },
       { value: "infantiles", label: "Muertes Infantiles" },
     ],
+    url: "https://raw.githubusercontent.com/luijorod/epistatsrd/main/page/src/assets/mmi.csv",
   },
 };
 
