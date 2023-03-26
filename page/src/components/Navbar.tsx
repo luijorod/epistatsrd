@@ -3,13 +3,15 @@ import { Link, useMatch, useResolvedPath } from "react-router-dom";
 export function Navbar() {
   return (
     <nav className="nav bg-black px-5">
-      <Link to="/" className="text-4xl">
+      <Link to="/" className="text-3xl">
         <span className="text-blue-500">epi</span>
         <span>stats</span>
         <span className="text-red-500">rd</span>
       </Link>
-      <ul className="flex gap-2 text-lg">
-        <CustomLink to="/">Visualizaciones</CustomLink>
+      <ul className="flex text-sm md:text-lg">
+        <CustomLink className="" to="/">
+          Visualizaciones
+        </CustomLink>
         <CustomLink to="/about">Acerca de</CustomLink>
       </ul>
     </nav>
