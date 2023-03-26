@@ -1,6 +1,6 @@
 export function About() {
   return (
-    <div className="mx-40 my-10 items-center justify-center">
+    <div className="md:mx-40 mx-10 my-10 items-center justify-center">
       <h1 className="text-3xl">Acerca de epistatsrd</h1>
       <br />
       <p>
