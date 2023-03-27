@@ -200,6 +200,7 @@ export function VizContainer(): JSX.Element {
                   <tbody className="text-sm">
                     {acumuladoArray.map((pv, i) => (
                       <tr
+                        key={pv.provincia}
                         className={
                           (i % 2 === 0 && "bg-gray-100") +
                           " hover:bg-yellow-100"
